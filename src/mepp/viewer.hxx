@@ -381,14 +381,14 @@ class Viewer : public QGLViewer
 		 *
 		 * \param c a QColor.
 		 */
-		void setViewerBackgroundColor(QColor c) { m_BackColor[0] = float(c.red())/255.; m_BackColor[1] = float(c.green())/255.; m_BackColor[2] = float(c.blue())/255.; updateGL(); }
+        void setViewerBackgroundColor(QColor c) { m_BackColor[0] = float(c.red())/255.; m_BackColor[1] = float(c.green())/255.; m_BackColor[2] = float(c.blue())/255.; m_BackColor[3] = float(c.alpha())/255.; updateGL(); }
 		/*!
 		 * \fn QColor getViewerBackgroundColor()
 		 * \brief Get background color.
 		 *
 		 * \return a QColor.
 		 */
-		QColor getViewerBackgroundColor() { return QColor(int(m_BackColor[0]*255.), int(m_BackColor[1]*255.), int(m_BackColor[2]*255.)); }
+        QColor getViewerBackgroundColor() { return QColor(int(m_BackColor[0]*255.), int(m_BackColor[1]*255.), int(m_BackColor[2]*255.), int(m_BackColor[3]*255.)); }
 
 		/*!
 		 * \fn setViewerVertexColor(QColor c)
@@ -396,14 +396,14 @@ class Viewer : public QGLViewer
 		 *
 		 * \param c a QColor.
 		 */
-		void setViewerVertexColor(QColor c) { m_VertexColor[0] = float(c.red())/255.; m_VertexColor[1] = float(c.green())/255.; m_VertexColor[2] = float(c.blue())/255.; recreateListsAndUpdateGL(); }
+        void setViewerVertexColor(QColor c) { m_VertexColor[0] = float(c.red())/255.; m_VertexColor[1] = float(c.green())/255.; m_VertexColor[2] = float(c.blue())/255.; m_VertexColor[3] = float(c.alpha())/255.; recreateListsAndUpdateGL(); }
 		/*!
 		 * \fn QColor getViewerVertexColor()
 		 * \brief Get vertex color.
 		 *
 		 * \return a QColor.
 		 */
-		QColor getViewerVertexColor() { return QColor(int(m_VertexColor[0]*255.), int(m_VertexColor[1]*255.), int(m_VertexColor[2]*255.)); }
+        QColor getViewerVertexColor() { return QColor(int(m_VertexColor[0]*255.), int(m_VertexColor[1]*255.), int(m_VertexColor[2]*255.), int(m_VertexColor[3]*255.)); }
 
 		/*!
 		 * \fn setViewerEdgeColor(QColor c)
@@ -411,14 +411,14 @@ class Viewer : public QGLViewer
 		 *
 		 * \param c a QColor.
 		 */
-		void setViewerEdgeColor(QColor c) { m_EdgeColor[0] = float(c.red())/255.; m_EdgeColor[1] = float(c.green())/255.; m_EdgeColor[2] = float(c.blue())/255.; recreateListsAndUpdateGL(); }
+        void setViewerEdgeColor(QColor c) { m_EdgeColor[0] = float(c.red())/255.; m_EdgeColor[1] = float(c.green())/255.; m_EdgeColor[2] = float(c.blue())/255.; m_EdgeColor[3] = float(c.alpha())/255.; recreateListsAndUpdateGL(); }
 		/*!
 		 * \fn QColor getViewerEdgeColor()
 		 * \brief Get edge color.
 		 *
 		 * \return a QColor.
 		 */
-		QColor getViewerEdgeColor() { return QColor(int(m_EdgeColor[0]*255.), int(m_EdgeColor[1]*255.), int(m_EdgeColor[2]*255.)); }
+        QColor getViewerEdgeColor() { return QColor(int(m_EdgeColor[0]*255.), int(m_EdgeColor[1]*255.), int(m_EdgeColor[2]*255.), int(m_EdgeColor[3]*255.)); }
 
 		/*!
 		 * \fn setViewerFaceColor(QColor c)
@@ -426,14 +426,14 @@ class Viewer : public QGLViewer
 		 *
 		 * \param c a QColor.
 		 */
-		void setViewerFaceColor(QColor c) { m_MeshColor[0] = float(c.red())/255.; m_MeshColor[1] = float(c.green())/255.; m_MeshColor[2] = float(c.blue())/255.; recreateListsAndUpdateGL(); }
+        void setViewerFaceColor(QColor c) { m_MeshColor[0] = float(c.red())/255.; m_MeshColor[1] = float(c.green())/255.; m_MeshColor[2] = float(c.blue())/255.; m_MeshColor[3] = float(c.alpha())/255.; recreateListsAndUpdateGL(); }
 		/*!
 		 * \fn QColor getViewerFaceColor()
 		 * \brief Get face color.
 		 *
 		 * \return a QColor.
 		 */
-		QColor getViewerFaceColor() { return QColor(int(m_MeshColor[0]*255.), int(m_MeshColor[1]*255.), int(m_MeshColor[2]*255.)); }
+        QColor getViewerFaceColor() { return QColor(int(m_MeshColor[0]*255.), int(m_MeshColor[1]*255.), int(m_MeshColor[2]*255.), int(m_MeshColor[3]*255.)); }
 		// color options
 
 		// show options
@@ -1090,10 +1090,10 @@ class Viewer : public QGLViewer
 		bool m_DrawVoronoiEdges;
 
 		// colors
-		float m_BackColor[3];
-		float m_MeshColor[3];
-		float m_EdgeColor[3];
-		float m_VertexColor[3];
+        float m_BackColor[4];
+        float m_MeshColor[4];
+        float m_EdgeColor[4];
+        float m_VertexColor[4];
 
 		// mouse
 		bool m_LeftButtonDown;

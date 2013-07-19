@@ -175,7 +175,7 @@ class MEPP_Common_Facet : public CGAL::HalfedgeDS_face_base<Refs, T>
 		Norm m_normal;
 
 		// color
-		float m_color[3];
+        float m_color[4];
 
 	public:
 		// life cycle
@@ -196,7 +196,7 @@ class MEPP_Common_Facet : public CGAL::HalfedgeDS_face_base<Refs, T>
 
 		// color
 		float color(int index) { return m_color[index]; }
-		void color(float r, float g, float b) { m_color[0] = r; m_color[1] = g; m_color[2] = b; }
+        void color(float r, float g, float b, float a=1.0f) { m_color[0] = r; m_color[1] = g; m_color[2] = b; m_color[3] = a;}
 };
 
 template <class Refs, class Tprev, class Tvertex, class Tface, class Norm>
@@ -250,7 +250,7 @@ class MEPP_Common_Vertex : public CGAL::HalfedgeDS_vertex_base<Refs, T, P>
 		Norm m_normal;
 
 		// color
-		float m_color[3];
+        float m_color[4];
 
 		// texture coordinates
 		float m_texture_coordinates[2];
@@ -259,19 +259,19 @@ class MEPP_Common_Vertex : public CGAL::HalfedgeDS_vertex_base<Refs, T, P>
 		// life cycle
 		MEPP_Common_Vertex()
 		{
-			color(0.5f, 0.5f, 0.5f);
+            color(0.5f, 0.5f, 0.5f);
 			texture_coordinates(0.0f, 0.0f);
 		}
 		// repeat mandatory constructors
 		MEPP_Common_Vertex(const P& pt) : CGAL::HalfedgeDS_vertex_base<Refs, T, P>(pt)
 		{
-			color(0.5f, 0.5f, 0.5f);
+            color(0.5f, 0.5f, 0.5f);
 			texture_coordinates(0.0f, 0.0f);
 		}
 
 		// color
 		float color(int index) { return m_color[index]; }
-		void color(float r, float g, float b) { m_color[0] = r; m_color[1] = g; m_color[2] = b; }
+        void color(float r, float g, float b, float a = 1.0f) { m_color[0] = r; m_color[1] = g; m_color[2] = b; m_color[3] = a;}
 
 		// texture coordinates
 		float texture_coordinates(int index) { return m_texture_coordinates[index]; }
@@ -592,7 +592,8 @@ class MEPP_Common_Polyhedron : public CGAL::Polyhedron_3<kernel,items>
 						float r = pFacet->color(0);
 						float g = pFacet->color(1);
 						float b = pFacet->color(2);
-						::glColor3f(r, g, b);
+                        float a = pFacet->color(3);
+                        ::glColor4f(r, g, b, a);
 					}
 					gl_draw_facet(pFacet, smooth_shading, use_normals, use_vertex_color, use_face_color, use_texture);
 				::glEnd();
@@ -631,7 +632,8 @@ class MEPP_Common_Polyhedron : public CGAL::Polyhedron_3<kernel,items>
 					float r = pHalfedge->vertex()->color(0);
 					float g = pHalfedge->vertex()->color(1);
 					float b = pHalfedge->vertex()->color(2);
-					::glColor3f(r, g, b);
+                    float a = pHalfedge->vertex()->color(3);
+                    ::glColor4f(r, g, b, a);
 				}
 
 				// texture

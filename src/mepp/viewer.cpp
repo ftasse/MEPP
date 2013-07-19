@@ -115,18 +115,22 @@ Viewer::Viewer(QWidget *parent, QList<mepp_component_plugin_interface *> lp) : Q
 		m_BackColor[0] = settings.value("BackColor/Red", 0.4).toFloat(); if ((m_BackColor[0] < 0.) || (m_BackColor[0] > 1.)) m_BackColor[0]=0.4f;
 		m_BackColor[1] = settings.value("BackColor/Green", 0.4).toFloat(); if ((m_BackColor[1] < 0.) || (m_BackColor[1] > 1.)) m_BackColor[1]=0.4f;
 		m_BackColor[2] = settings.value("BackColor/Blue", 0.4).toFloat(); if ((m_BackColor[2] < 0.) || (m_BackColor[2] > 1.)) m_BackColor[2]=0.4f;
+        m_BackColor[3] = 1.0f;
 
 		m_MeshColor[0] = settings.value("FaceColor/Red", 1.0).toFloat(); if ((m_MeshColor[0] < 0.) || (m_MeshColor[0] > 1.)) m_MeshColor[0]=1.0f;
 		m_MeshColor[1] = settings.value("FaceColor/Green", 1.0).toFloat(); if ((m_MeshColor[1] < 0.) || (m_MeshColor[1] > 1.)) m_MeshColor[1]=1.0f;
 		m_MeshColor[2] = settings.value("FaceColor/Blue", 1.0).toFloat(); if ((m_MeshColor[2] < 0.) || (m_MeshColor[2] > 1.)) m_MeshColor[2]=1.0f;
+        m_MeshColor[3] = 1.0f;
 
 		m_EdgeColor[0] = settings.value("EdgeColor/Red", 0.0).toFloat(); if ((m_EdgeColor[0] < 0.) || (m_EdgeColor[0] > 1.)) m_EdgeColor[0]=0.0f;
 		m_EdgeColor[1] = settings.value("EdgeColor/Green", 0.0).toFloat(); if ((m_EdgeColor[1] < 0.) || (m_EdgeColor[1] > 1.)) m_EdgeColor[1]=0.0f;
 		m_EdgeColor[2] = settings.value("EdgeColor/Blue", 0.0).toFloat(); if ((m_EdgeColor[2] < 0.) || (m_EdgeColor[2] > 1.)) m_EdgeColor[2]=0.0f;
+        m_EdgeColor[3] = 1.0f;
 
 		m_VertexColor[0] = settings.value("VertexColor/Red", 0.0).toFloat(); if ((m_VertexColor[0] < 0.) || (m_VertexColor[0] > 1.)) m_VertexColor[0]=0.0f;
 		m_VertexColor[1] = settings.value("VertexColor/Green", 0.0).toFloat(); if ((m_VertexColor[1] < 0.) || (m_VertexColor[1] > 1.)) m_VertexColor[1]=0.0f;
 		m_VertexColor[2] = settings.value("VertexColor/Blue", 0.0).toFloat(); if ((m_VertexColor[2] < 0.) || (m_VertexColor[2] > 1.)) m_VertexColor[2]=0.0f;
+        m_VertexColor[3] = 1.0f;
 
 		m_last_material = settings.value("Material", "Light blue").toString().toStdString().c_str(); // if bad string Material = None
 	settings.endGroup();
@@ -753,7 +757,7 @@ void Viewer::render(bool sel, bool grab)
 		}
 
 		// set mesh color
-		glColor3f(m_MeshColor[0],m_MeshColor[1],m_MeshColor[2]);
+        glColor4f(m_MeshColor[0],m_MeshColor[1],m_MeshColor[2], m_MeshColor[3]);
 	}
 
 	// antialiasing
@@ -798,7 +802,7 @@ void Viewer::render(bool sel, bool grab)
 		glColor3f(1.0f,0.0f,0.0f);
 		glDisable(GL_LIGHTING);
 		scene_ptr->get_polyhedron()->gl_draw_bounding_box();
-		glColor3f(m_MeshColor[0],m_MeshColor[1],m_MeshColor[2]); // new
+        glColor4f(m_MeshColor[0],m_MeshColor[1],m_MeshColor[2],m_MeshColor[3]); // new
 
 // temp MT
 		/*double xmin, ymin, zmin, xmax, ymax, zmax;
@@ -856,23 +860,23 @@ void Viewer::render(bool sel, bool grab)
 
 		// edge color
 		if (grab)
-			glColor3f(1.f-m_EdgeColor[0],0.f,1.f-m_EdgeColor[2]);
+            glColor4f(1.f-m_EdgeColor[0],0.f,1.f-m_EdgeColor[2], m_EdgeColor[3]);
 		else if (sel)
-			glColor3f(1.f-m_EdgeColor[0],1.f-m_EdgeColor[1],0.f);
+            glColor4f(1.f-m_EdgeColor[0],1.f-m_EdgeColor[1],0.f, m_EdgeColor[3]);
 		else
-			glColor3f(m_EdgeColor[0],m_EdgeColor[1],m_EdgeColor[2]);
+            glColor4f(m_EdgeColor[0],m_EdgeColor[1],m_EdgeColor[2], m_EdgeColor[3]);
 
 		// superimpose edges on the mesh
 		scene_ptr->get_polyhedron()->superimpose_edges(m_DrawVoronoiEdges);
 
-		glColor3f(m_EdgeColor[0],m_EdgeColor[1],m_EdgeColor[2]);
+        glColor4f(m_EdgeColor[0],m_EdgeColor[1],m_EdgeColor[2], m_EdgeColor[3]);
 	}
 	// end superimpose edges
 
 	// superimpose vertices
 	if ((m_SuperimposeVertices || m_SuperimposeVerticesBig) && !(m_Moving && m_DrawBoundingBoxWhenMoving))
 	{
-		glColor3f(m_VertexColor[0],m_VertexColor[1],m_VertexColor[2]);
+        glColor4f(m_VertexColor[0],m_VertexColor[1],m_VertexColor[2], m_VertexColor[3]);
 
 		if (m_SuperimposeVertices)
 			scene_ptr->get_polyhedron()->superimpose_vertices();
@@ -906,8 +910,8 @@ void Viewer::render(bool sel, bool grab)
 	if (((mainwindow *)getParent())->activeMdiChild() == this)
 	{
 		glPushMatrix();
-			for (int p=0; p<lplugin.size(); p++)
-				lplugin[p]->post_draw();
+            for (int p=0; p<lplugin.size(); p++)
+                lplugin[p]->post_draw();
 		glPopMatrix();
 	}
 
