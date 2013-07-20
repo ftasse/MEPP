@@ -59,7 +59,7 @@ class Skeleton_Extraction_Component :
         PolyhedronPtr m_contractedmesh_ptr;
         PolyhedronPtr m_mesh_ptr;
 
-        double LUT_CourbureClust[3*256];
+        double LUT[3*256];
 
     public:
         double wl0, wh0, sl, wShapeCost, wSamplingCost;
