@@ -157,7 +157,7 @@ void extractSkeleton(OMesh &mesh, OMesh &contracted, Skeleton &skeleton,
                      bool useCentroids, bool save_intermediate)
 {
     contractMesh(mesh, contracted, wl0, wh0, sl, maxiter);
-    if (save_intermediate) OpenMesh::IO::write_mesh(mesh, "tmp_contracted_mesh.off");
+    if (save_intermediate) OpenMesh::IO::write_mesh(contracted, "tmp_contracted_mesh.off");
 
     simplifyToSkeleton(mesh, contracted, skeleton, wShapeCost, wSamplingCost);
     if (save_intermediate) skeleton.save("tmp_unrefined.skel");
@@ -180,10 +180,10 @@ bool extractSkeleton(std::string mesh_path, std::string skeleton_path, bool save
 
     OMesh contracted;
     Skeleton skeleton;
-    extractSkeleton(mesh, contracted, skeleton, save_intermediate);
+    extractSkeleton(mesh, contracted, skeleton);
 
     skeleton.save(skeleton_path);
-    std::cout << "Skeleton successfully extracted!!!" << std::endl << std::flush;
+    std::cout << "Skeleton successfully extracted!" << std::endl << std::flush;
     return true;
 }
 

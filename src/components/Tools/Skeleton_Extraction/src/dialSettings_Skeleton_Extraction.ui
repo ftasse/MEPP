@@ -147,6 +147,9 @@
      <height>27</height>
     </rect>
    </property>
+   <property name="decimals">
+    <number>8</number>
+   </property>
   </widget>
   <widget class="QDoubleSpinBox" name="wh0">
    <property name="geometry">
@@ -156,6 +159,9 @@
      <width>81</width>
      <height>27</height>
     </rect>
+   </property>
+   <property name="decimals">
+    <number>8</number>
    </property>
   </widget>
   <widget class="QDoubleSpinBox" name="shapeCost">
@@ -167,6 +173,9 @@
      <height>27</height>
     </rect>
    </property>
+   <property name="decimals">
+    <number>8</number>
+   </property>
   </widget>
   <widget class="QDoubleSpinBox" name="samplingCost">
    <property name="geometry">
@@ -176,6 +185,9 @@
      <width>81</width>
      <height>27</height>
     </rect>
+   </property>
+   <property name="decimals">
+    <number>8</number>
    </property>
   </widget>
   <widget class="QLabel" name="label_8">
@@ -199,6 +211,9 @@
      <width>81</width>
      <height>27</height>
     </rect>
+   </property>
+   <property name="decimals">
+    <number>8</number>
    </property>
   </widget>
   <widget class="QLabel" name="label_9">

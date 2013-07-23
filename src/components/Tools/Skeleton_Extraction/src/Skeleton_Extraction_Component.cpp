@@ -50,17 +50,18 @@ Skeleton_Extraction_Component::Skeleton_Extraction_Component(Viewer* v, Polyhedr
     m_skeleton_ptr = SkeletonPtr(new Skeleton());
 
     Facet_iterator pFacet	=	m_mesh_ptr->facets_begin();
-    double totArea = 0.0;
+    double avgArea = 0.0;
     for(;pFacet	!= m_mesh_ptr->facets_end();pFacet++)
     {
         pFacet->color(pFacet->color(0), pFacet->color(1), pFacet->color(2), 0.2f);
-        totArea += Enriched_kernel::Compute_area_3()(pFacet->halfedge()->vertex()->point(),
+        avgArea += Enriched_kernel::Compute_area_3()(pFacet->halfedge()->vertex()->point(),
                                                      pFacet->halfedge()->next()->vertex()->point(),
                                                      pFacet->halfedge()->opposite()->vertex()->point() );
     }
+    avgArea /= m_mesh_ptr->size_of_facets();
 
     //Contraction
-    wl0 = sqrt(totArea/m_mesh_ptr->size_of_facets());
+    wl0 = sqrt(avgArea);
     wh0 = 1.0;
     sl = 2.0;
     maxiter = 20;
@@ -115,12 +116,17 @@ void Skeleton_Extraction_Component::refineEmbedding()
 
 void Skeleton_Extraction_Component::extractSkeleton()
 {
-    contract();
-    simplify();
-    refineEmbedding();
+    skeletonExtraction::OMesh mesh, contracted;
+    polyhedron2openmesh(m_mesh_ptr, mesh);
+    polyhedron2openmesh(m_contractedmesh_ptr, contracted);
+    
+    skeletonExtraction::extractSkeleton(mesh, contracted, *m_skeleton_ptr,
+                                        wl0, wh0, sl, maxiter,
+                                        wShapeCost, wSamplingCost,
+                                        useCentroid);
+    openmesh2polyhedron(contracted, m_contractedmesh_ptr);
 }
 
-#endif
 
 void Skeleton_Extraction_Component::vertexThicknessToColorMap()
 {
@@ -163,3 +169,6 @@ void Skeleton_Extraction_Component::vertexThicknessToColorMap()
                 0.6f);
     }
 }
+
+
+#endif

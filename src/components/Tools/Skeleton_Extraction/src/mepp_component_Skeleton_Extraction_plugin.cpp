@@ -33,6 +33,8 @@ SettingsDialogPtr create_dialog_settings(Skeleton_Extraction_ComponentPtr compon
     dialog_ptr->shapeCost->setValue(component_ptr->wShapeCost);
     dialog_ptr->samplingCost->setValue(component_ptr->wSamplingCost);
     dialog_ptr->useCentroid->setChecked(component_ptr->useCentroid);
+    
+    std::cout << "Wl0*: " << component_ptr->wl0 << " " << dialog_ptr->wl0->value() << "\n" << std::flush;
     return dialog_ptr;
 }
 

@@ -17,8 +17,8 @@ if (COMMAND cmake_policy)
   ENDIF()
 endif (COMMAND cmake_policy)
 
-set(PROJECT_NAME SkeletonExtraction)
-set(PROJECT_DIR ../../components/Tools/Skeleton_Extraction)
+set(PROJECT_NAME HKS)
+set(PROJECT_DIR ../../components/Tools/HKS)
 set(PROJECT_TOOLS ${PROJECT_DIR}/src/tools)
 set(CMAKE_BUILD_TYPE Debug)
 
@@ -53,6 +53,16 @@ ELSE(EIGEN3_FOUND)
         MESSAGE(FATAL_ERROR "EIGEN3 not found.")
 ENDIF(EIGEN3_FOUND)
 
+
+# Find Arpack libraries
+FIND_PACKAGE(Arpack REQUIRED)
+IF(ARPACK_FOUND)
+        INCLUDE_DIRECTORIES(${ARPACK_INCLUDE_DIR})
+        MESSAGE(STATUS "Found ARPACK: ${ARPACK_LIB}")
+ELSE(ARPACK_FOUND)
+        MESSAGE(FATAL_ERROR "ARPACK not found.")
+ENDIF(ARPACK_FOUND)
+
 file(
 	GLOB_RECURSE
 	source_files
@@ -73,7 +83,7 @@ add_library(
 file(
 	GLOB
 	header_files
-        ${PROJECT_TOOLS}/skeleton*.h
+        ${PROJECT_TOOLS}/*.h
 )
 
 # do the copying
@@ -86,11 +96,10 @@ foreach( file_i ${header_files})
 )
 endforeach( file_i )
 
-
 #Link with OpenMesh
 target_link_libraries( ${PROJECT_NAME}Test ${OPENMESH_LIBRARIES}  )
 target_link_libraries( ${PROJECT_NAME} ${OPENMESH_LIBRARIES}  )
 
-#Link with Umfpack
-target_link_libraries( ${PROJECT_NAME}Test ${UMFPACK_LIBRARIES})
-target_link_libraries( ${PROJECT_NAME} ${UMFPACK_LIBRARIES})
+#Link with Arpack
+target_link_libraries( ${PROJECT_NAME}Test ${ARPACK_LIB})
+target_link_libraries( ${PROJECT_NAME} ${ARPACK_LIB})
